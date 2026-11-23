@@ -71,23 +71,27 @@ export default function Navbar({ transparent = false }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-full bg-[#C59B6D] flex items-center justify-center text-white font-serif text-lg font-bold shadow-sm transition-transform duration-300 group-hover:scale-105">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-serif text-sm font-bold shadow-xs transition-transform duration-300 group-hover:scale-105 ${
+            shouldBeDarkText
+              ? "bg-[#C59B6D] text-white"
+              : "bg-white/25 backdrop-blur-xs text-white border border-white/40"
+          }`}>
             W
           </div>
           <div className="flex flex-col">
             <span
-              className={`font-serif text-2xl tracking-[0.15em] font-medium uppercase transition-colors ${
+              className={`font-serif text-2xl tracking-[0.06em] font-normal transition-colors ${
                 shouldBeDarkText ? "text-[#1C1917]" : "text-white"
               }`}
             >
-              WedPlan
+              Gretna Green
             </span>
             <span
               className={`text-[9px] uppercase tracking-[0.3em] font-sans -mt-1 font-semibold ${
-                shouldBeDarkText ? "text-[#C59B6D]" : "text-white/80"
+                shouldBeDarkText ? "text-[#C59B6D]" : "text-white/90"
               }`}
             >
-              Wedding Atelier
+              WedPlan Atelier
             </span>
           </div>
         </Link>

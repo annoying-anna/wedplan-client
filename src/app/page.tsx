@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import ServiceCard from "@/components/ServiceCard";
 import { Service } from "@/types";
 import { fetchApi } from "@/lib/api";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Camera,
   Castle,
@@ -27,6 +27,8 @@ import {
   Compass,
   Heart,
   Send,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -35,6 +37,41 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [newsletterEmail, setNewsletterEmail] = useState<string>("");
   const [newsletterSuccess, setNewsletterSuccess] = useState<boolean>(false);
+
+  // Gretna Green 3 Signature Colorways
+  const colorways = [
+    {
+      id: "sage",
+      name: "Sage Olive",
+      color: "#8F996B",
+      bgImage: "/wedding/gretna-bg-sage.jpg",
+      couple: "Emma ❀ Roko",
+    },
+    {
+      id: "blush",
+      name: "Blush Coral",
+      color: "#E69B88",
+      bgImage: "/wedding/gretna-bg-blush.jpg",
+      couple: "Sophia ❀ Julian",
+    },
+    {
+      id: "sand",
+      name: "Warm Sand",
+      color: "#C8B296",
+      bgImage: "/wedding/gretna-bg-sand.jpg",
+      couple: "Isabella ❀ Lucas",
+    },
+  ];
+
+  const [activeSlide, setActiveSlide] = useState<number>(0);
+
+  // Auto-cycle through Gretna Green themes every 7 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % colorways.length);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, [colorways.length]);
 
   useEffect(() => {
     const loadFeatured = async () => {
@@ -172,122 +209,125 @@ export default function HomePage() {
     setNewsletterEmail("");
   };
 
+  const currentTheme = colorways[activeSlide];
+
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#1C1917] selection:bg-[#C59B6D] selection:text-white">
       {/* Top Navbar with transparent style over hero */}
       <Navbar transparent={true} />
 
-      {/* 1. HERO BANNER SECTION (Crisp, High-Res, ZERO Overlaps) */}
-      <section className="relative min-h-[94vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Clean, high-resolution romantic wedding photo without baked-in text */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 scale-105"
-          style={{
-            backgroundImage: "url('/wedding/hero-lights.jpg')",
-          }}
-        />
-
-        {/* Sophisticated Luxury Dark Vignette Overlay for High Typography Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-black/90" />
-
-        {/* Vertical Left Brand Subtitle */}
-        <div className="hidden xl:flex flex-col items-center gap-6 absolute left-10 top-1/2 -translate-y-1/2 z-20 text-white/50 text-[10px] uppercase tracking-[0.35em] [writing-mode:vertical-lr] rotate-180">
-          <span>WedPlan Atelier · Haute Celebration</span>
-          <div className="w-[1px] h-12 bg-white/30" />
-        </div>
-
-        {/* Vertical Social Links on the right (f, tw, ig) */}
-        <div className="hidden lg:flex flex-col items-center gap-6 absolute right-8 top-1/2 -translate-y-1/2 z-20 text-white/70">
-          <div className="w-[1px] h-12 bg-white/30" />
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-[#C59B6D] transition-colors text-xs font-semibold tracking-wider hover:scale-110"
-            aria-label="Facebook"
-          >
-            FB
-          </a>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-[#C59B6D] transition-colors text-xs font-semibold tracking-wider hover:scale-110"
-            aria-label="Twitter"
-          >
-            TW
-          </a>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-[#C59B6D] transition-colors text-xs font-semibold tracking-wider hover:scale-110"
-            aria-label="Instagram"
-          >
-            IG
-          </a>
-          <div className="w-[1px] h-12 bg-white/30" />
-        </div>
-
-        {/* Hero Center Text Content */}
-        <div className="relative z-20 max-w-5xl mx-auto px-6 text-center text-white pt-28 pb-36">
+      {/* 1. AUTHENTIC GRETNA GREEN HERO SLIDER SECTION */}
+      <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-1000">
+        {/* Background Gretna Green Floral Canvas with Smooth Crossfade */}
+        <AnimatePresence mode="wait">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Eyebrow Label with flanking gold lines */}
-            <div className="inline-flex items-center gap-3 text-xs md:text-sm font-semibold tracking-[0.35em] uppercase text-[#DFBF99] mb-6">
-              <span className="w-8 h-[1px] bg-[#C59B6D]" />
-              WEDDING PLANNER & ATELIER
-              <span className="w-8 h-[1px] bg-[#C59B6D]" />
-            </div>
+            key={currentTheme.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.9 }}
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url('${currentTheme.bgImage}')`,
+              backgroundColor: currentTheme.color,
+            }}
+          />
+        </AnimatePresence>
 
-            {/* Main Headline with delicate italic serif */}
-            <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal leading-[1.08] tracking-tight mb-8">
-              Your Dream Wedding <br />
-              <span className="italic font-normal text-[#E8DED8] drop-shadow-sm">
-                Made Perfect
-              </span>
+        {/* Center Editorial Content directly matching Gretna Green */}
+        <div className="relative z-20 max-w-4xl mx-auto px-6 text-center text-white pt-24 pb-28">
+          <motion.div
+            key={currentTheme.id + "-text"}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            {/* Top Eyebrow */}
+            <span className="text-xs sm:text-sm uppercase tracking-[0.45em] font-light text-white/95 block mb-5">
+              W E D D I N G S
+            </span>
+
+            {/* Huge Serif Headline: Gretna Green / WedPlan */}
+            <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal tracking-tight text-white leading-none drop-shadow-sm mb-4">
+              Gretna Green
             </h1>
 
-            {/* Description */}
-            <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/90 font-light leading-relaxed mb-10">
-              Discover legendary venues, world-class photographers, bespoke floral artists, and
-              curated wedding designers to orchestrate an unforgettable celebration.
+            {/* Romantic Cursive Script with Custom Theme Flower Emblem */}
+            <div className="flex items-center justify-center gap-3 my-4">
+              <span className="font-script text-3xl sm:text-5xl md:text-6xl text-white font-normal drop-shadow-sm">
+                Emma
+              </span>
+              <img
+                src="/wedding/h1-custom-icon-img-1.png"
+                alt="flower"
+                className="w-7 h-5 sm:w-9 sm:h-7 object-contain inline-block drop-shadow-sm"
+              />
+              <span className="font-script text-3xl sm:text-5xl md:text-6xl text-white font-normal drop-shadow-sm">
+                Roko
+              </span>
+            </div>
+
+            {/* Narrative Subtitle matching Gretna Green text */}
+            <p className="max-w-xl mx-auto text-xs sm:text-sm text-white/90 font-light leading-relaxed my-6 px-4">
+              Let the magic happens! Prepare for the big day with a team of experts that will make
+              sure you enjoy every second of it. Celebrate your love in the stylish manner with the
+              best wedding organization in the city all at great price.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Interactive CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
               <Link
                 href="/services"
-                className="w-full sm:w-auto px-9 py-4 rounded-full bg-[#C59B6D] hover:bg-[#8E7356] text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-xl hover:shadow-2xl hover:scale-105"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-[0.2em] font-semibold shadow-xl hover:scale-105"
               >
-                Explore Wedding Services
+                Explore Services
               </Link>
               <a
-                href="#venues"
-                className="w-full sm:w-auto px-9 py-4 rounded-full border border-white/50 hover:border-white bg-black/20 hover:bg-white/10 text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all backdrop-blur-sm"
+                href="#about"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-full border border-white text-white hover:bg-white/20 transition-all text-xs uppercase tracking-[0.2em] font-semibold backdrop-blur-xs"
               >
-                Discover Venues
+                About Our Atelier
               </a>
             </div>
           </motion.div>
         </div>
 
-        {/* Magazine / Press Logos Bar */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 py-7 bg-gradient-to-t from-black/95 to-transparent border-t border-white/15">
-          <div className="max-w-6xl mx-auto px-6 flex flex-wrap items-center justify-around gap-8 text-white/60 text-xs font-serif tracking-[0.25em] uppercase">
-            <span className="font-bold text-sm tracking-widest text-white/75">Forbes</span>
-            <span className="font-serif italic text-sm text-white/75">The New York Times</span>
-            <span className="font-serif text-sm tracking-wider text-white/75">The Guardian</span>
-            <span className="font-bold text-sm tracking-widest text-white/75">TIME</span>
-            <span className="font-semibold text-sm tracking-widest text-white/75">NBC NEWS</span>
-          </div>
+        {/* Colorway / Slider Controls at Bottom Center */}
+        <div className="absolute bottom-8 left-0 right-0 z-20 flex items-center justify-center gap-3">
+          {colorways.map((c, idx) => (
+            <button
+              key={c.id}
+              onClick={() => setActiveSlide(idx)}
+              aria-label={`Select ${c.name} palette`}
+              className={`w-3.5 h-3.5 rounded-full transition-all duration-300 border-2 ${
+                activeSlide === idx
+                  ? "scale-125 border-white bg-white shadow-lg"
+                  : "border-white/60 bg-transparent hover:border-white"
+              }`}
+            />
+          ))}
         </div>
+
+        {/* Left & Right Arrow Navigation */}
+        <button
+          onClick={() =>
+            setActiveSlide((prev) => (prev - 1 + colorways.length) % colorways.length)
+          }
+          className="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition-all backdrop-blur-xs hidden md:flex"
+          aria-label="Previous theme"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <button
+          onClick={() => setActiveSlide((prev) => (prev + 1) % colorways.length)}
+          className="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition-all backdrop-blur-xs hidden md:flex"
+          aria-label="Next theme"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </section>
 
-      {/* 2. ABOUT COMPANY (Directly from original-cec1da31e5f1a8be29d9da7d99f7da6a.webp) */}
+      {/* 2. ABOUT COMPANY (From original-cec1da31e5f1a8be29d9da7d99f7da6a.webp) */}
       <section id="about" className="py-28 max-w-7xl mx-auto px-6 sm:px-8">
         <div className="text-center mb-16">
           <span className="eyebrow-divider mb-3">Our Company</span>
@@ -307,7 +347,7 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Circular Terracotta Rotating Stamp Overlay Badge matching design: RECEPTION • RECEPTION */}
+            {/* Circular Terracotta Rotating Stamp Overlay Badge */}
             <div className="absolute -bottom-7 -right-5 sm:right-6 w-36 h-36 rounded-full bg-[#C7795C] text-white flex items-center justify-center p-3 shadow-2xl border-4 border-[#FAF8F5]">
               <div className="relative w-full h-full rounded-full border border-dashed border-white/60 flex items-center justify-center animate-spin-slow">
                 <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -908,7 +948,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 10. EDITORIAL INSTAGRAM / MOMENTS GALLERY (Direct from Gretna Green & Fleur) */}
+      {/* 10. EDITORIAL INSTAGRAM / MOMENTS GALLERY */}
       <section className="py-24 bg-white border-t border-[#E8E2D9]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 mb-12 text-center">
           <span className="eyebrow-divider mb-3">Atelier Moments</span>
