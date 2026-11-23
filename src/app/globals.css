@@ -1,26 +1,76 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #FAF8F5;
+  --foreground: #1C1917;
+  --gold: #C59B6D;
+  --gold-light: #DFBF99;
+  --olive: #525D4F;
+  --terracotta: #C7795C;
+  --border-wedding: #E8E2D9;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-accent {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Elegant wedding divider eyebrow styling */
+.eyebrow-divider {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #C59B6D;
+  font-weight: 600;
+}
+
+.eyebrow-divider::before,
+.eyebrow-divider::after {
+  content: "";
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background-color: #C59B6D;
+  opacity: 0.6;
+}
+
+/* Badge Rotating Animation */
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+}
+
+/* Glassmorphism card for hero & navigation */
+.glass-header {
+  background: rgba(250, 248, 245, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark-glass-header {
+  background: rgba(20, 18, 17, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
