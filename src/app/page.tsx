@@ -20,10 +20,11 @@ import {
   CheckCircle2,
   Users2,
   ArrowRight,
-  Heart,
   Quote,
   Star,
   Check,
+  Calendar,
+  Compass,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -52,44 +53,68 @@ export default function HomePage() {
     {
       name: "Photography & Videography",
       icon: Camera,
-      image:
-        "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80",
+      image: "/wedding/photography-portfolio.jpg",
       description: "Timeless documentary & cinematic captures",
     },
     {
       name: "Wedding Venues",
       icon: Castle,
-      image:
-        "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80",
-      description: "Historic estates, ballrooms & romantic vineyards",
+      image: "/wedding/citation-venue.jpg",
+      description: "Historic Neoclassical estates, vineyards & private halls",
     },
     {
       name: "Decoration & Florist",
       icon: Flower2,
-      image:
-        "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80",
+      image: "/wedding/florist-showcase.jpg",
       description: "Bespoke botanicals, ceremony arches & candlelight",
     },
     {
       name: "Catering Services",
       icon: UtensilsCrossed,
-      image:
-        "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=600&q=80",
+      image: "/wedding/wedding-cakes.jpg",
       description: "Artisanal gastronomy, plated feasts & custom cakes",
     },
     {
       name: "Makeup & Styling",
       icon: Sparkles,
-      image:
-        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80",
+      image: "/wedding/beauty-home.jpg",
       description: "High-definition bridal glam & bespoke hairstyling",
     },
     {
       name: "Wedding Fashion",
       icon: Shirt,
-      image:
-        "https://images.unsplash.com/photo-1594552072238-b8a33785b261?auto=format&fit=crop&w=600&q=80",
+      image: "/wedding/bridal-store.jpg",
       description: "Haute couture gowns, tailored tuxedos & veils",
+    },
+  ];
+
+  const blogArticles = [
+    {
+      title: "Weddings Rings Guide: Find Your Dream Rings",
+      category: "Jewelry & Rings",
+      date: "Sep 18, 2026",
+      image: "/wedding/jewelry-shop.jpg",
+      readTime: "5 min read",
+      summary:
+        "How to select heirloom metals, conflict-free diamonds, and custom engraving for your eternal bands.",
+    },
+    {
+      title: "How to Plan Your Wedding: An A-Z Guide",
+      category: "Floral Design & Planning",
+      date: "Oct 04, 2026",
+      image: "/wedding/landing-cards-gallery-img-2.jpg",
+      readTime: "8 min read",
+      summary:
+        "From palette exploration to day-of run-sheets, our master checklist ensures every detail unfolds seamlessly.",
+    },
+    {
+      title: "Top 10 Secret Wedding Gown Boutiques",
+      category: "Haute Couture",
+      date: "Nov 12, 2026",
+      image: "/wedding/tailor-home.jpg",
+      readTime: "6 min read",
+      summary:
+        "Curated French lace ateliers, bespoke silhouettes, and sustainable bridal design houses.",
     },
   ];
 
@@ -98,21 +123,26 @@ export default function HomePage() {
       {/* Top Navbar with transparent style over hero */}
       <Navbar transparent={true} />
 
-      {/* 1. HERO BANNER SECTION (Matching provided UI/UX reference) */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Wedding Image with romantic lighting */}
+      {/* 1. HERO BANNER SECTION (Exact match to Gretna Green & original-cec1da31e5f1a8be29d9da7d99f7da6a.webp) */}
+      <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Wedding Image with high-fashion veil */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 scale-105"
           style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=85')",
+            backgroundImage: "url('/wedding/hero-veil.jpg')",
           }}
         />
 
         {/* Sophisticated Luxury Dark Vignette Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/85" />
 
-        {/* Vertical Social Links on the right (as seen in the design reference) */}
+        {/* Vertical Left Brand Subtitle */}
+        <div className="hidden xl:flex flex-col items-center gap-6 absolute left-10 top-1/2 -translate-y-1/2 z-20 text-white/50 text-[10px] uppercase tracking-[0.35em] [writing-mode:vertical-lr] rotate-180">
+          <span>WedPlan Atelier · Haute Celebration</span>
+          <div className="w-[1px] h-12 bg-white/30" />
+        </div>
+
+        {/* Vertical Social Links on the right */}
         <div className="hidden lg:flex flex-col items-center gap-6 absolute right-8 top-1/2 -translate-y-1/2 z-20 text-white/70">
           <div className="w-[1px] h-12 bg-white/30" />
           <a
@@ -143,32 +173,34 @@ export default function HomePage() {
         </div>
 
         {/* Hero Center Text Content */}
-        <div className="relative z-20 max-w-5xl mx-auto px-6 text-center text-white pt-24 pb-32">
+        <div className="relative z-20 max-w-5xl mx-auto px-6 text-center text-white pt-28 pb-36">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             {/* Eyebrow Label with flanking gold lines */}
-            <div className="inline-flex items-center gap-3 text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-[#C59B6D] mb-6">
+            <div className="inline-flex items-center gap-3 text-xs md:text-sm font-semibold tracking-[0.35em] uppercase text-[#DFBF99] mb-6">
               <span className="w-8 h-[1px] bg-[#C59B6D]" />
               WEDDING PLANNER & ATELIER
               <span className="w-8 h-[1px] bg-[#C59B6D]" />
             </div>
 
-            {/* Main Headline */}
+            {/* Main Headline with delicate italic serif */}
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal leading-[1.08] tracking-tight mb-8">
               Your Dream Wedding <br />
-              <span className="italic font-normal text-[#E8DED8]">Made Perfect</span>
+              <span className="italic font-normal text-[#E8DED8] drop-shadow-sm">
+                Made Perfect
+              </span>
             </h1>
 
             {/* Description */}
-            <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/80 font-light leading-relaxed mb-10">
+            <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/85 font-light leading-relaxed mb-10">
               Discover legendary venues, world-class photographers, bespoke floral artists, and
               curated wedding designers to orchestrate an unforgettable celebration.
             </p>
 
-            {/* CTA Button */}
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/services"
@@ -177,23 +209,23 @@ export default function HomePage() {
                 Explore Wedding Services
               </Link>
               <a
-                href="#about"
+                href="#venues"
                 className="w-full sm:w-auto px-9 py-4 rounded-full border border-white/50 hover:border-white bg-black/20 hover:bg-white/10 text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all backdrop-blur-sm"
               >
-                Learn More
+                Discover Venues
               </a>
             </div>
           </motion.div>
         </div>
 
         {/* Magazine / Press Logos Bar */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 py-8 bg-gradient-to-t from-black/90 to-transparent border-t border-white/10">
-          <div className="max-w-6xl mx-auto px-6 flex flex-wrap items-center justify-around gap-8 text-white/50 text-xs font-serif tracking-[0.25em] uppercase">
-            <span className="font-bold text-sm tracking-widest text-white/60">Forbes</span>
-            <span className="font-serif italic text-sm text-white/60">The New York Times</span>
-            <span className="font-serif text-sm tracking-wider text-white/60">The Guardian</span>
-            <span className="font-bold text-sm tracking-widest text-white/60">TIME</span>
-            <span className="font-semibold text-sm tracking-widest text-white/60">NBC NEWS</span>
+        <div className="absolute bottom-0 left-0 right-0 z-20 py-7 bg-gradient-to-t from-black/95 to-transparent border-t border-white/15">
+          <div className="max-w-6xl mx-auto px-6 flex flex-wrap items-center justify-around gap-8 text-white/55 text-xs font-serif tracking-[0.25em] uppercase">
+            <span className="font-bold text-sm tracking-widest text-white/70">Forbes</span>
+            <span className="font-serif italic text-sm text-white/70">The New York Times</span>
+            <span className="font-serif text-sm tracking-wider text-white/70">The Guardian</span>
+            <span className="font-bold text-sm tracking-widest text-white/70">TIME</span>
+            <span className="font-semibold text-sm tracking-widest text-white/70">NBC NEWS</span>
           </div>
         </div>
       </section>
@@ -235,7 +267,7 @@ export default function HomePage() {
         <div className="text-center mt-16">
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-[0.2em] font-semibold"
+            className="inline-flex items-center gap-2 px-9 py-4 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-[0.2em] font-semibold shadow-sm hover:shadow-md"
           >
             <span>View All Wedding Services</span>
             <ArrowRight className="w-4 h-4" />
@@ -243,130 +275,210 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. DYNAMIC SECTION 2: WEDDING SERVICE CATEGORIES */}
-      <section className="py-24 bg-[#F5EFEB] border-y border-[#E8E2D9]">
+      {/* 3. ICONIC VENUES SPOTLIGHT (Directly from original-ec15bfe3357ec72c52afbfa013261102.webp) */}
+      <section id="venues" className="py-28 bg-[#F5EFEB] border-y border-[#E8E2D9]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="eyebrow-divider mb-3">Explore by Discipline</span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] mt-2 mb-4">
-              Wedding Service Categories
-            </h2>
-            <p className="text-sm text-gray-500 font-light leading-relaxed">
-              Explore your celebration essentials by category, curated with the highest standards of
-              craftsmanship and luxury.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            {/* Left Column: Narrative, architectural details & CTA */}
+            <div className="lg:col-span-7 space-y-6">
+              <span className="eyebrow-divider mb-2">Iconic Venues</span>
+              <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] leading-tight">
+                An unforgettable atmosphere away from the crowd, for your crowd
+              </h2>
+              <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
+                Citation, situated in the heart of Glasgow&apos;s Merchant City, is a stunning
+                Neoclassical landmark dating back to 1844. With Corinthian columns, grand stone
+                staircases, and romantic candlelit chambers, it provides an exquisite backdrop for
+                your vows and evening banquets.
+              </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((cat, idx) => {
-              const IconComp = cat.icon;
-              return (
+              {/* Architectural features list */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-[#E8E2D9]">
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-[#C59B6D] font-bold block">
+                    Architecture
+                  </span>
+                  <p className="font-serif text-base text-[#1C1917]">Neoclassical · 1844</p>
+                  <p className="text-xs text-gray-500 font-light">Corinthian stone columns</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-[#C59B6D] font-bold block">
+                    Capacity
+                  </span>
+                  <p className="font-serif text-base text-[#1C1917]">Up to 220 Guests</p>
+                  <p className="text-xs text-gray-500 font-light">Ceremony & dining halls</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-[#C59B6D] font-bold block">
+                    Exclusivity
+                  </span>
+                  <p className="font-serif text-base text-[#1C1917]">Private Floors</p>
+                  <p className="text-xs text-gray-500 font-light">Dedicated terrace & lounge</p>
+                </div>
+              </div>
+
+              <div className="pt-4">
                 <Link
-                  key={idx}
-                  href={`/services?category=${encodeURIComponent(cat.name)}`}
-                  className="group relative h-80 rounded-2xl overflow-hidden border border-[#E8E2D9] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col justify-end p-8"
+                  href="/services?category=Wedding%20Venues"
+                  className="inline-flex items-center gap-2 px-9 py-4 rounded-full bg-[#1C1917] text-white hover:bg-[#C59B6D] transition-all text-xs uppercase tracking-[0.2em] font-semibold shadow-lg"
                 >
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/90 transition-all" />
-
-                  <div className="relative z-10 text-white">
-                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-4 text-[#C59B6D] border border-white/30 group-hover:bg-[#C59B6D] group-hover:text-white transition-colors">
-                      <IconComp className="w-5 h-5" />
-                    </div>
-                    <h3 className="font-serif text-2xl font-normal text-white group-hover:text-[#C59B6D] transition-colors mb-2">
-                      {cat.name}
-                    </h3>
-                    <p className="text-xs text-white/80 font-light leading-relaxed">
-                      {cat.description}
-                    </p>
-                    <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-[#C59B6D] font-semibold mt-4 group-hover:translate-x-1 transition-transform">
-                      Browse Category <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
+                  <span>Explore Iconic Venues</span>
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
-              );
-            })}
+              </div>
+            </div>
+
+            {/* Right Column: High-fashion architectural photograph in arched frame */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-white aspect-[3/4] bg-[#E8E2D9]">
+                <img
+                  src="/wedding/citation-venue.jpg"
+                  alt="Citation Glasgow Neoclassical Landmark"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#DFBF99] block mb-1">
+                    Landmark Spotlight
+                  </span>
+                  <h4 className="font-serif text-xl font-normal">Citation · Glasgow</h4>
+                  <p className="text-xs text-white/80 font-light">
+                    Merchant City Neoclassical Landmark · Est. 1844
+                  </p>
+                </div>
+              </div>
+
+              {/* Decorative Accent Ribbon */}
+              <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full border border-[#C59B6D]/40 pointer-events-none -z-0 hidden sm:block" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 4. "ABOUT COMPANY" / "WHY CHOOSE WEDPLAN?" (Exact match to design reference) */}
-      <section id="about" className="py-28 max-w-7xl mx-auto px-6 sm:px-8">
-        <div className="text-center mb-16">
-          <span className="eyebrow-divider mb-3">Our Company</span>
-          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] mt-2">
-            About Company
+      {/* 4. DYNAMIC SECTION 2: WEDDING SERVICE CATEGORIES */}
+      <section className="py-28 max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="eyebrow-divider mb-3">Explore by Discipline</span>
+          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] mt-2 mb-4">
+            Wedding Service Categories
           </h2>
+          <p className="text-sm text-gray-500 font-light leading-relaxed">
+            Explore your celebration essentials by category, curated with the highest standards of
+            craftsmanship and luxury.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left: Romantic Wedding Bride in Car Image with Circular Stamp Badge */}
-          <div className="relative">
-            <div className="relative h-[480px] w-full rounded-2xl overflow-hidden shadow-2xl border border-[#E8E2D9]">
-              <img
-                src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80"
-                alt="Bride in vintage convertible car"
-                className="w-full h-full object-cover"
-              />
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+          {categories.map((cat, idx) => {
+            const IconComp = cat.icon;
+            return (
+              <Link
+                key={idx}
+                href={`/services?category=${encodeURIComponent(cat.name)}`}
+                className="group relative h-84 rounded-2xl overflow-hidden border border-[#E8E2D9] shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-end p-8"
+              >
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10 group-hover:from-black/90 transition-all" />
 
-            {/* Circular Stamp Overlay Badge matching design: RECEPTION • RECEPTION in warm terracotta */}
-            <div className="absolute -bottom-8 -right-6 sm:right-6 w-36 h-36 rounded-full bg-[#C7795C] text-white flex items-center justify-center p-3 shadow-2xl border-4 border-[#FAF8F5]">
-              <div className="relative w-full h-full rounded-full border border-dashed border-white/60 flex items-center justify-center animate-spin-slow">
-                <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <path
-                    id="stampCircle"
-                    d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                    fill="none"
-                  />
-                  <text className="text-[9px] font-bold uppercase tracking-[0.25em] fill-white">
-                    <textPath xlinkHref="#stampCircle" startOffset="0%">
-                      WEDPLAN • RECEPTION • ATELIER •
-                    </textPath>
-                  </text>
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-white" />
+                <div className="relative z-10 text-white">
+                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-4 text-[#C59B6D] border border-white/30 group-hover:bg-[#C59B6D] group-hover:text-white transition-colors">
+                    <IconComp className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-serif text-2xl font-normal text-white group-hover:text-[#DFBF99] transition-colors mb-2">
+                    {cat.name}
+                  </h3>
+                  <p className="text-xs text-white/85 font-light leading-relaxed">
+                    {cat.description}
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-[#C59B6D] font-semibold mt-4 group-hover:translate-x-1.5 transition-transform">
+                    Browse Category <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 5. "ABOUT COMPANY" / STORYTELLING (Matching original-cec1da31e5f1a8be29d9da7d99f7da6a.webp) */}
+      <section id="about" className="py-28 bg-[#FAF8F5] border-t border-[#E8E2D9]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+          <div className="text-center mb-16">
+            <span className="eyebrow-divider mb-3">Our Company</span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] mt-2">
+              About Company
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Romantic Wedding Bride in Car Image with Circular Rotating Stamp Badge */}
+            <div className="relative">
+              <div className="relative h-[480px] w-full rounded-2xl overflow-hidden shadow-2xl border border-[#E8E2D9]">
+                <img
+                  src="/wedding/bride-car.jpg"
+                  alt="Bride in vintage convertible car"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Circular Terracotta Rotating Stamp Overlay Badge matching design: RECEPTION • RECEPTION */}
+              <div className="absolute -bottom-7 -right-5 sm:right-6 w-36 h-36 rounded-full bg-[#C7795C] text-white flex items-center justify-center p-3 shadow-2xl border-4 border-[#FAF8F5]">
+                <div className="relative w-full h-full rounded-full border border-dashed border-white/60 flex items-center justify-center animate-spin-slow">
+                  <svg viewBox="0 0 100 100" className="w-full h-full">
+                    <path
+                      id="stampCircle"
+                      d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                      fill="none"
+                    />
+                    <text className="text-[9px] font-bold uppercase tracking-[0.25em] fill-white">
+                      <textPath xlinkHref="#stampCircle" startOffset="0%">
+                        WEDPLAN • RECEPTION • ATELIER •
+                      </textPath>
+                    </text>
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-white" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Right: Narrative text and pill button */}
-          <div className="space-y-6">
-            <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#1C1917] leading-tight">
-              We are a team of passionate and experienced wedding planners
-            </h3>
+            {/* Right: Narrative text and pill button */}
+            <div className="space-y-6">
+              <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#1C1917] leading-tight">
+                We are a team of passionate and experienced wedding planners
+              </h3>
 
-            <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
-              Our team of wedding planners is passionate about creating unforgettable wedding
-              experiences. We understand that every wedding is unique, and we work closely with our
-              clients to ensure that their vision becomes a breathtaking reality.
-            </p>
+              <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
+                Our team of wedding planners is passionate about creating unforgettable wedding
+                experiences. We understand that every wedding is unique, and we work closely with
+                our clients to ensure that their vision becomes a breathtaking reality.
+              </p>
 
-            <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
-              Our approach is personal, friendly, and deeply professional. From historic Scottish
-              manors to California wine country estates, we strive to make the planning process as
-              effortless and stress-free as possible.
-            </p>
+              <p className="text-gray-600 font-light leading-relaxed text-sm sm:text-base">
+                Our approach is personal, friendly, and deeply professional. From historic Scottish
+                manors to California wine country estates, we strive to make the planning process as
+                effortless and stress-free as possible.
+              </p>
 
-            <div className="pt-4">
-              <Link
-                href="/services"
-                className="inline-block px-9 py-3.5 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-[0.2em] font-semibold"
-              >
-                Book Now
-              </Link>
+              <div className="pt-4">
+                <Link
+                  href="/services"
+                  className="inline-block px-9 py-4 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-[0.2em] font-semibold"
+                >
+                  Book Now
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. BENEFITS SECTION (Matching original-5e2d8d13614a878c8884d531ffeb1ac2.webp) */}
+      {/* 6. BENEFITS SECTION (Matching original-5e2d8d13614a878c8884d531ffeb1ac2.webp) */}
       <section className="py-24 bg-white border-y border-[#E8E2D9]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
           <div className="text-center max-w-2xl mx-auto mb-20">
@@ -410,7 +522,9 @@ export default function HomePage() {
               <div className="w-12 h-12 rounded-2xl bg-[#FAF8F5] border border-[#E8E2D9] flex items-center justify-center text-[#C59B6D]">
                 <Users2 className="w-6 h-6" />
               </div>
-              <h3 className="font-serif text-xl font-medium text-[#1C1917]">Efficient Coordination</h3>
+              <h3 className="font-serif text-xl font-medium text-[#1C1917]">
+                Efficient Coordination
+              </h3>
               <p className="text-xs text-gray-500 font-light leading-relaxed">
                 Coordinate all artisans involved in your wedding in one centralized place, from
                 bespoke catering and decor to photographers.
@@ -434,13 +548,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. PRICING PLANS SECTION (Matching original-ec15bfe3357ec72c52afbfa013261102.webp) */}
+      {/* 7. PRICING PLANS SECTION (Matching original-ec15bfe3357ec72c52afbfa013261102.webp) */}
       <section id="pricing" className="py-28 max-w-7xl mx-auto px-6 sm:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <span className="eyebrow-divider mb-3">Plan</span>
             <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] mt-2">
-              We've got a pricing plan that's <br className="hidden sm:block" />
+              We&apos;ve got a pricing plan that&apos;s <br className="hidden sm:block" />
               perfect for you
             </h2>
           </div>
@@ -455,7 +569,7 @@ export default function HomePage() {
         {/* 3 Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {/* Card 1: Local Event */}
-          <div className="bg-white rounded-2xl p-8 border border-[#E8E2D9] flex flex-col justify-between shadow-sm hover:shadow-lg transition-all">
+          <div className="bg-white rounded-2xl p-8 border border-[#E8E2D9] flex flex-col justify-between shadow-sm hover:shadow-xl transition-all">
             <div>
               <span className="text-xs uppercase tracking-widest font-medium text-gray-400">
                 Couples Package
@@ -488,13 +602,13 @@ export default function HomePage() {
 
             <Link
               href="/register"
-              className="w-full text-center py-3 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-widest font-semibold mt-4"
+              className="w-full text-center py-3.5 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-widest font-semibold mt-4"
             >
               Get Started
             </Link>
           </div>
 
-          {/* Card 2: Standard Event (Highlighted in dark olive green #525D4F matching mockup) */}
+          {/* Card 2: Vendor Premium Plan (Highlighted in dark olive green #525D4F matching mockup) */}
           <div className="bg-[#525D4F] text-white rounded-2xl p-8 border border-[#525D4F] flex flex-col justify-between shadow-2xl relative md:-translate-y-4">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C59B6D] text-white text-[10px] uppercase font-bold tracking-widest px-4 py-1 rounded-full shadow-md">
               Most Popular
@@ -541,8 +655,8 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Card 3: International Event */}
-          <div className="bg-white rounded-2xl p-8 border border-[#E8E2D9] flex flex-col justify-between shadow-sm hover:shadow-lg transition-all">
+          {/* Card 3: Grand Celebration */}
+          <div className="bg-white rounded-2xl p-8 border border-[#E8E2D9] flex flex-col justify-between shadow-sm hover:shadow-xl transition-all">
             <div>
               <span className="text-xs uppercase tracking-widest font-medium text-gray-400">
                 Destination Grand
@@ -575,7 +689,7 @@ export default function HomePage() {
 
             <Link
               href="/services"
-              className="w-full text-center py-3 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-widest font-semibold mt-4"
+              className="w-full text-center py-3.5 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-widest font-semibold mt-4"
             >
               Contact Concierge
             </Link>
@@ -583,22 +697,89 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. TESTIMONIALS SECTION (Matching original-ec15bfe3357ec72c52afbfa013261102.webp) */}
-      <section className="py-24 bg-[#FAF8F5] border-t border-[#E8E2D9]">
+      {/* 8. LATEST ARTICLES / PLANNING JOURNAL (Directly from original-ec15bfe3357ec72c52afbfa013261102.webp) */}
+      <section className="py-28 bg-[#F5EFEB] border-t border-[#E8E2D9]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <span className="eyebrow-divider mb-3">Article</span>
+              <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] mt-2">
+                Latest articles
+              </h2>
+            </div>
+            <Link
+              href="/services"
+              className="self-start md:self-auto px-7 py-3 rounded-full border border-[#1C1917] text-[#1C1917] hover:bg-[#1C1917] hover:text-white transition-all text-xs uppercase tracking-widest font-semibold"
+            >
+              See All Article
+            </Link>
+          </div>
+
+          {/* 3 Blog Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {blogArticles.map((article, idx) => (
+              <div
+                key={idx}
+                className="group bg-white rounded-2xl overflow-hidden border border-[#E8E2D9] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#E8E2D9]">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
+                  />
+                  <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-[#1C1917] text-[10px] uppercase tracking-wider font-semibold px-3 py-1 rounded-full shadow-sm">
+                    {article.category}
+                  </span>
+                </div>
+
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-3 text-xs text-gray-400 mb-3 font-medium">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5 text-[#C59B6D]" />
+                        {article.date}
+                      </span>
+                      <span>•</span>
+                      <span>{article.readTime}</span>
+                    </div>
+
+                    <h3 className="font-serif text-xl font-normal text-[#1C1917] group-hover:text-[#C59B6D] transition-colors leading-snug">
+                      {article.title}
+                    </h3>
+
+                    <p className="text-xs text-gray-500 font-light mt-3 leading-relaxed">
+                      {article.summary}
+                    </p>
+                  </div>
+
+                  <div className="pt-5 mt-5 border-t border-[#E8E2D9]/70 flex items-center justify-between text-xs font-semibold text-[#1C1917] group-hover:text-[#C59B6D] transition-colors">
+                    <span className="uppercase tracking-widest text-[11px]">Read Full Story</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9. TESTIMONIALS SECTION (Matching original-ec15bfe3357ec72c52afbfa013261102.webp) */}
+      <section className="py-28 bg-[#FAF8F5] relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <span className="eyebrow-divider mb-3">Testimonials</span>
-          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] mt-2 mb-10">
+          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C1917] mt-2 mb-12">
             What our clients have to say...
           </h2>
 
-          <div className="relative bg-white rounded-3xl p-10 sm:p-14 border border-[#E8E2D9] shadow-md">
+          <div className="relative bg-white rounded-3xl p-10 sm:p-16 border border-[#E8E2D9] shadow-lg">
             <Quote className="w-12 h-12 text-[#C59B6D] mx-auto mb-6 fill-[#C59B6D]/20" />
             <p className="font-serif text-lg sm:text-2xl text-[#1C1917] font-normal leading-relaxed italic mb-8">
-              "Our special day on 26th September was just amazing in every way! From start to finish
+              &ldquo;Our special day on 26th September was just amazing in every way! From start to finish
               the day was full of love, laughter, and special memories created all day. WedPlan
-              connected us with our dream venue and photographers who captured every pure moment."
+              connected us with our dream venue and photographers who captured every pure moment.&rdquo;
             </p>
-            <div className="flex items-center justify-center gap-1 text-[#C59B6D] mb-2">
+            <div className="flex items-center justify-center gap-1 text-[#C59B6D] mb-3">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-[#C59B6D]" />
               ))}
@@ -607,6 +788,32 @@ export default function HomePage() {
               Maddie & Gabe — Glasgow Neoclassical Landmark
             </p>
           </div>
+        </div>
+
+        {/* Floating Rotating "LET'S TALK ↗" CTA Badge */}
+        <div className="flex justify-center mt-14">
+          <Link
+            href="/services"
+            className="group relative w-36 h-36 rounded-full bg-[#1C1917] text-white flex items-center justify-center shadow-2xl hover:bg-[#C59B6D] transition-all hover:scale-105"
+          >
+            <div className="relative w-full h-full rounded-full flex items-center justify-center animate-spin-slow">
+              <svg viewBox="0 0 100 100" className="w-full h-full">
+                <path
+                  id="ctaCircle"
+                  d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"
+                  fill="none"
+                />
+                <text className="text-[9px] font-bold uppercase tracking-[0.28em] fill-white">
+                  <textPath xlinkHref="#ctaCircle" startOffset="0%">
+                    LET&apos;S TALK • PLAN WEDDING •
+                  </textPath>
+                </text>
+              </svg>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <ArrowRight className="w-6 h-6 text-white group-hover:rotate-45 transition-transform duration-300" />
+            </div>
+          </Link>
         </div>
       </section>
 
