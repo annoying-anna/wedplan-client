@@ -1,12 +1,13 @@
 {
-  "name": "client-init",
-  "version": "0.1.0",
+  "name": "wedplan-client",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node tests/client-smoke.test.js"
   },
   "dependencies": {
     "@stripe/stripe-js": "^10.3.0",
