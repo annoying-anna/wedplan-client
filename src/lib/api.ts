@@ -24,11 +24,25 @@ export async function fetchApi<T = any>(
 
   const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
-  const response = await fetch(url, {
-    credentials: 'include',
-    ...options,
-    headers,
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      credentials: 'include',
+      signal: controller.signal,
+      ...options,
+      headers,
+    });
+  } catch (err: any) {
+    if (err?.name === 'AbortError') {
+      throw new Error('Request timed out. Please check your connection and try again.');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 
   const data = await response.json().catch(() => ({
     success: false,
