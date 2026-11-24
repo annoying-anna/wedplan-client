@@ -200,7 +200,12 @@ export default function ServiceDetailsPage({ params }: Props) {
             {/* Main Featured Photo */}
             <div className="relative h-[440px] sm:h-[500px] w-full rounded-3xl overflow-hidden bg-[#F4EFEA] border border-[#E8E2D9] shadow-md">
               <img
-                src={selectedImage || service.images[0]}
+                src={
+                  selectedImage ||
+                  (service.images && service.images.length > 0
+                    ? service.images[0]
+                    : "/wedding/citation-venue.jpg")
+                }
                 alt={service.serviceName}
                 className="w-full h-full object-cover transition-all duration-500"
               />

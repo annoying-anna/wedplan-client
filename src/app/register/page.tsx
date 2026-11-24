@@ -4,6 +4,7 @@ import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { uploadImageToImgBB } from "@/lib/upload";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
@@ -41,17 +42,28 @@ function RegisterForm() {
   const hasLowercase = /[a-z]/.test(password);
   const isPasswordValid = hasMinLength && hasUppercase && hasLowercase;
 
-  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Local image preview reader
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        setImagePreview(result);
-        setImage(result);
-      };
-      reader.readAsDataURL(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      setUploadingImage(true);
+
+      try {
+        toast.info("Uploading profile photo to ImgBB hosting...");
+        const hostedUrl = await uploadImageToImgBB(file);
+        setImage(hostedUrl);
+        toast.success("Profile photo uploaded successfully!");
+      } catch (err: any) {
+        toast.error("Photo upload failed. Using local preview.");
+        const reader = new FileReader();
+        reader.onloadend = () => setImage(reader.result as string);
+        reader.readAsDataURL(file);
+      } finally {
+        setUploadingImage(false);
+      }
     }
   };
 

@@ -119,7 +119,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
             Browse Services
           </Link>
           <a
-            href="#venues"
+            href="/#venues"
             className={`transition-colors duration-200 hover:text-[#C59B6D] ${
               shouldBeDarkText ? "text-[#1C1917]/80" : "text-white/90"
             }`}
@@ -127,7 +127,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
             Venues
           </a>
           <a
-            href="#how-it-works"
+            href="/#how-it-works"
             className={`transition-colors duration-200 hover:text-[#C59B6D] ${
               shouldBeDarkText ? "text-[#1C1917]/80" : "text-white/90"
             }`}
@@ -135,7 +135,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
             How It Works
           </a>
           <a
-            href="#pricing"
+            href="/#pricing"
             className={`transition-colors duration-200 hover:text-[#C59B6D] ${
               shouldBeDarkText ? "text-[#1C1917]/80" : "text-white/90"
             }`}
@@ -143,7 +143,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
             Pricing
           </a>
           <a
-            href="#about"
+            href="/#about"
             className={`transition-colors duration-200 hover:text-[#C59B6D] ${
               shouldBeDarkText ? "text-[#1C1917]/80" : "text-white/90"
             }`}
@@ -151,7 +151,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
             About Us
           </a>
           <a
-            href="#contact"
+            href="/#contact"
             className={`transition-colors duration-200 hover:text-[#C59B6D] ${
               shouldBeDarkText ? "text-[#1C1917]/80" : "text-white/90"
             }`}
@@ -297,13 +297,19 @@ export default function Navbar({ transparent = false }: NavbarProps) {
             >
               Browse Services
             </Link>
-            <a href="#about" className="py-2 border-b border-gray-100 hover:text-[#C59B6D]">
-              About Us
+            <a href="/#venues" className="py-2 border-b border-gray-100 hover:text-[#C59B6D]">
+              Venues
             </a>
-            <a href="#pricing" className="py-2 border-b border-gray-100 hover:text-[#C59B6D]">
+            <a href="/#how-it-works" className="py-2 border-b border-gray-100 hover:text-[#C59B6D]">
+              How It Works
+            </a>
+            <a href="/#pricing" className="py-2 border-b border-gray-100 hover:text-[#C59B6D]">
               Pricing
             </a>
-            <a href="#contact" className="py-2 border-b border-gray-100 hover:text-[#C59B6D]">
+            <a href="/#about" className="py-2 border-b border-gray-100 hover:text-[#C59B6D]">
+              About Us
+            </a>
+            <a href="/#contact" className="py-2 border-b border-gray-100 hover:text-[#C59B6D]">
               Contact
             </a>
 

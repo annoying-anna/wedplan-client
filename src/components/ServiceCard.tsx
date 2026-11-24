@@ -39,7 +39,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
         <img
           src={primaryImage}
           alt={service.serviceName}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-70 group-hover:opacity-50 transition-opacity" />

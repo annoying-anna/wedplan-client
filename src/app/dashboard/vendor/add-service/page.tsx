@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { fetchApi } from "@/lib/api";
+import { uploadImageToImgBB } from "@/lib/upload";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import {
@@ -66,16 +67,28 @@ export default function AddServicePage() {
     checkLimit();
   }, [user]);
 
-  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        setImagePreview(result);
-        setImageUrl(result);
-      };
-      reader.readAsDataURL(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      setUploadingImage(true);
+
+      try {
+        toast.info("Uploading image to ImgBB hosting...");
+        const hostedUrl = await uploadImageToImgBB(file);
+        setImageUrl(hostedUrl);
+        toast.success("Image uploaded successfully!");
+      } catch (err: any) {
+        toast.error("Image upload failed. Using local preview.");
+        const reader = new FileReader();
+        reader.onloadend = () => setImageUrl(reader.result as string);
+        reader.readAsDataURL(file);
+      } finally {
+        setUploadingImage(false);
+      }
     }
   };
 

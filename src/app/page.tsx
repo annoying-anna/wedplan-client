@@ -583,7 +583,7 @@ export default function HomePage() {
                 <svg viewBox="0 0 100 100" className="w-full h-full">
                   <path id="stampCircle" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
                   <text className="text-[9px] font-bold uppercase tracking-[0.28em] fill-white">
-                    <textPath xlinkHref="#stampCircle" startOffset="0%">
+                    <textPath href="#stampCircle" startOffset="0%">
                       WedPlan Atelier · Since 2024 ·
                     </textPath>
                   </text>
@@ -956,7 +956,7 @@ export default function HomePage() {
               <svg viewBox="0 0 100 100" className="w-full h-full">
                 <path id="ctaCircle" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="none" />
                 <text className="text-[9px] font-bold uppercase tracking-[0.28em] fill-white">
-                  <textPath xlinkHref="#ctaCircle" startOffset="0%">
+                  <textPath href="#ctaCircle" startOffset="0%">
                     LET&apos;S TALK • PLAN WEDDING •
                   </textPath>
                 </text>
