@@ -2,6 +2,15 @@
 
 A role-based, full-stack wedding planning application built with Next.js (App Router), TypeScript, and Tailwind CSS. The interface strictly adopts the provided luxury editorial design aesthetic (inspired by Gretna Green & Fleur Bridal Store), featuring serif typography, champagne gold accents, terracotta reception stamp badges, and seamless booking workflows.
 
+---
+
+## 🌐 Live Website & Links
+- **Live Frontend**: [https://client-rho-five-11.vercel.app](https://client-rho-five-11.vercel.app)
+- **Live Backend API**: [https://wedplan-server-gilt.vercel.app](https://wedplan-server-gilt.vercel.app)
+- **GitHub Repository**: [https://github.com/annoying-anna/wedplan-client](https://github.com/annoying-anna/wedplan-client)
+
+---
+
 ## Important Features
 - **Editorial Wedding Design Reference**: Faithfully preserves typography (`Playfair Display`, `Cormorant Garamond`, `Plus Jakarta Sans`), colors (ivory `#FAF8F5`, champagne gold `#C59B6D`, sage olive `#525D4F`, terracotta `#C7795C`), spacing, and custom rotating decorative badges.
 - **Dynamic Hero & Featured Services**: Real-time integration with backend database for verified and approved wedding services across 6 key wedding disciplines.
