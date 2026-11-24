@@ -11,13 +11,16 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^10.3.0",
+    "better-auth": "^1.7.27",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "framer-motion": "^14.14.0",
     "lucide-react": "^1.78.0",
+    "mongodb": "^7.9.1",
     "next": "15.5.29",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-icons": "^5.7.0",
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.7.1"
   },

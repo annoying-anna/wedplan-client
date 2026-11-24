@@ -31,15 +31,24 @@ A role-based, full-stack wedding planning application built with Next.js (App Ro
 ## Technology Stack
 - **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
+- **Authentication**: Better Auth (`better-auth`, `@better-auth/react`), Google OAuth, JWT Plugin
+- **Database Adapter**: MongoDB Client Adapter (`mongodb`)
 - **Styling**: Tailwind CSS, CSS Custom Properties, Google Web Fonts
-- **Animations & Icons**: Framer Motion, Lucide React, Canvas Confetti
+- **Animations & Icons**: Framer Motion, Lucide React, React Icons, Canvas Confetti
 - **Notifications**: Sonner (Rich Toast Notifications)
 - **Payment Gateway**: Stripe SDK & Stripe Checkout
+- **Image Hosting**: ImgBB API
 
 ## Environment Variables
 Create a `.env.local` file in the root of the `client` directory:
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/wedplan
+BETTER_AUTH_SECRET=your_better_auth_secret_key
+BETTER_AUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
 NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_api_key
 ```

@@ -4,6 +4,7 @@ import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { authClient } from "@/lib/auth-client";
 import { uploadImageToImgBB } from "@/lib/upload";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -109,6 +110,20 @@ function RegisterForm() {
   const handleGoogleSignIn = async () => {
     setSubmitting(true);
     try {
+      // First attempt Better Auth social Google sign in
+      try {
+        const result = await authClient.signIn.social({
+          provider: "google",
+          callbackURL: "/",
+        });
+        if (result?.data?.url) {
+          window.location.assign(result.data.url);
+          return;
+        }
+      } catch (betterAuthErr) {
+        // Fallback to direct Google authentication endpoint
+      }
+
       const user = await googleLogin({
         name: "Google Wedding Guest",
         email: "google.guest@example.com",

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { User, UserRole } from "@/types";
 import { fetchApi } from "@/lib/api";
+import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -179,7 +180,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await authClient.signOut();
+    } catch (e) {
+      // ignore
+    }
     setToken(null);
     setUser(null);
     localStorage.removeItem("wedplan_token");
