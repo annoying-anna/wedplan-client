@@ -244,7 +244,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-xs tracking-wider uppercase font-medium text-red-600 hover:bg-red-50 transition-colors text-left"
                     >
                       <LogOut className="w-4 h-4 text-red-500" />
-                      Sign Out
+                      Logout
                     </button>
                   </div>
                 </div>
@@ -266,7 +266,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
                 href="/register"
                 className="text-xs tracking-[0.15em] uppercase font-medium px-5 py-2.5 rounded-full border border-[#C59B6D] bg-[#C59B6D] text-white hover:bg-[#8E7356] hover:border-[#8E7356] transition-all shadow-sm"
               >
-                Join WedPlan
+                Sign Up
               </Link>
             </div>
           )}
@@ -340,7 +340,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
                   className="py-2 flex items-center gap-2 text-red-600 text-left"
                 >
                   <LogOut className="w-4 h-4" />
-                  Sign Out
+                  Logout
                 </button>
               </div>
             ) : (
