@@ -5,7 +5,7 @@ import { MongoClient } from "mongodb";
 
 const uri =
   process.env.MONGODB_URI ||
-  "mongodb+srv://himelbarman22_db_user:abir9876@annoying.208jf6p.mongodb.net/wedplan";
+  "mongodb://127.0.0.1:27017/wedplan";
 
 let client: MongoClient;
 
@@ -98,6 +98,6 @@ export const auth = betterAuth({
   ].filter(Boolean),
   secret:
     process.env.BETTER_AUTH_SECRET ||
-    "wedplan_better_auth_secret_key_super_secure_assignment_9",
+    "wedplan_local_dev_only_better_auth_secret_change_me",
   baseURL: getAuthBaseUrl(),
 });

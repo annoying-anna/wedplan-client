@@ -79,6 +79,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUser(null);
             setToken(null);
           }
+        } else {
+          // Bridge a Better Auth session (Google OAuth) into the Express JWT session.
+          // Google sign-in completes on the Better Auth callback; this syncs that
+          // verified profile with the Express API so the navbar/dashboard update.
+          try {
+            const explicitlyLoggedOut =
+              typeof window !== "undefined" &&
+              localStorage.getItem("wedplan_explicit_logout") === "1";
+
+            if (explicitlyLoggedOut) {
+              return;
+            }
+
+            const session = await authClient.getSession();
+            const authUser = session?.data?.user;
+
+            if (authUser?.email) {
+              const data = await fetchApi<{ success: boolean; token: string; user: User }>(
+                "/auth/google",
+                {
+                  method: "POST",
+                  body: JSON.stringify({
+                    name: authUser.name || authUser.email.split("@")[0],
+                    email: authUser.email,
+                    image: authUser.image || undefined,
+                  }),
+                }
+              );
+
+              if (data.success && data.token && data.user) {
+                setToken(data.token);
+                setUser(data.user);
+                localStorage.setItem("wedplan_token", data.token);
+                localStorage.setItem("wedplan_user", JSON.stringify(data.user));
+                localStorage.removeItem("wedplan_explicit_logout");
+              }
+            }
+          } catch (bridgeErr: any) {
+            // No Better Auth session is a normal state for guests.
+            console.debug("No Better Auth session to bridge:", bridgeErr?.message || bridgeErr);
+          }
         }
       } catch (err) {
         console.error("Auth initialization error:", err);
@@ -105,6 +146,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(data.user);
       localStorage.setItem("wedplan_token", data.token);
       localStorage.setItem("wedplan_user", JSON.stringify(data.user));
+      localStorage.removeItem("wedplan_explicit_logout");
 
       toast.success(`Welcome back, ${data.user.name}!`);
       return data.user;
@@ -138,6 +180,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(data.user);
       localStorage.setItem("wedplan_token", data.token);
       localStorage.setItem("wedplan_user", JSON.stringify(data.user));
+      localStorage.removeItem("wedplan_explicit_logout");
 
       toast.success(`Account created successfully! Welcome to WedPlan.`);
       return data.user;
@@ -169,6 +212,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(data.user);
       localStorage.setItem("wedplan_token", data.token);
       localStorage.setItem("wedplan_user", JSON.stringify(data.user));
+      localStorage.removeItem("wedplan_explicit_logout");
 
       toast.success(`Signed in with Google as ${data.user.name}`);
       return data.user;
@@ -181,6 +225,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
+    // Prevent a lingering Better Auth (Google) session from silently
+    // re-authenticating the user on the next page load after an explicit logout.
+    if (typeof window !== "undefined") {
+      localStorage.setItem("wedplan_explicit_logout", "1");
+    }
+
     try {
       await authClient.signOut();
     } catch (e) {

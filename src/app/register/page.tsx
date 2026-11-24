@@ -110,6 +110,9 @@ function RegisterForm() {
   const handleGoogleSignIn = async () => {
     setSubmitting(true);
     try {
+      // A new Google attempt should override a previous explicit logout.
+      localStorage.removeItem("wedplan_explicit_logout");
+
       // First attempt Better Auth social Google sign in
       try {
         const result = await authClient.signIn.social({
