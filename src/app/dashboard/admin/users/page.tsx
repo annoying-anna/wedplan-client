@@ -17,6 +17,9 @@ import {
   Lock,
   Unlock,
   Sparkles,
+  Eye,
+  X,
+  Calendar,
 } from "lucide-react";
 
 export default function AdminUsersPage() {
@@ -25,6 +28,7 @@ export default function AdminUsersPage() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const loadUsers = async () => {
     setLoading(true);
@@ -219,31 +223,42 @@ export default function AdminUsersPage() {
                         </td>
 
                         <td className="py-4 px-6 text-right">
-                          {isSelfAdmin ? (
-                            <span className="text-[11px] text-gray-400 italic">Protected</span>
-                          ) : (
+                          <div className="flex items-center justify-end gap-2">
                             <button
-                              onClick={() => handleToggleBlock(u)}
-                              disabled={isProcessing}
-                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all disabled:opacity-50 ${
-                                u.isBlocked
-                                  ? "bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100"
-                                  : "bg-red-50 text-red-700 border border-red-300 hover:bg-red-100"
-                              }`}
+                              onClick={() => setSelectedUser(u)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#FAF8F5] text-[#8E7356] border border-[#E8E2D9] hover:border-[#C59B6D] transition-all"
+                              title="View User Details"
                             >
-                              {u.isBlocked ? (
-                                <>
-                                  <Unlock className="w-3 h-3" />
-                                  <span>Unblock</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Lock className="w-3 h-3" />
-                                  <span>Block User</span>
-                                </>
-                              )}
+                              <Eye className="w-3 h-3" />
+                              <span>View</span>
                             </button>
-                          )}
+
+                            {isSelfAdmin ? (
+                              <span className="text-[11px] text-gray-400 italic">Protected</span>
+                            ) : (
+                              <button
+                                onClick={() => handleToggleBlock(u)}
+                                disabled={isProcessing}
+                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all disabled:opacity-50 ${
+                                  u.isBlocked
+                                    ? "bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100"
+                                    : "bg-red-50 text-red-700 border border-red-300 hover:bg-red-100"
+                                }`}
+                              >
+                                {u.isBlocked ? (
+                                  <>
+                                    <Unlock className="w-3 h-3" />
+                                    <span>Unblock</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Lock className="w-3 h-3" />
+                                    <span>Block User</span>
+                                  </>
+                                )}
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     );
@@ -262,6 +277,132 @@ export default function AdminUsersPage() {
           </div>
         )}
       </div>
+
+      {/* User Details Modal */}
+      {selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setSelectedUser(null)}
+          />
+          <div className="relative bg-white rounded-3xl border border-[#E8E2D9] shadow-2xl max-w-lg w-full p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <span className="eyebrow-divider text-[10px]">Registered Account</span>
+                <h3 className="font-serif text-2xl text-[#1C1917] mt-1">User Details</h3>
+              </div>
+              <button
+                onClick={() => setSelectedUser(null)}
+                className="p-2 rounded-full hover:bg-[#FAF8F5] text-gray-500"
+                aria-label="Close user details"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 bg-[#FAF8F5] rounded-2xl border border-[#E8E2D9]">
+              <img
+                src={
+                  selectedUser.image ||
+                  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+                }
+                alt={selectedUser.name}
+                className="w-16 h-16 rounded-full object-cover border-2 border-[#C59B6D]"
+              />
+              <div className="min-w-0">
+                <p className="font-serif text-xl text-[#1C1917] truncate">{selectedUser.name}</p>
+                <p className="text-xs text-gray-500 truncate flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-[#C59B6D]" />
+                  {selectedUser.email}
+                </p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#C59B6D]/15 text-[#8E7356] border border-[#C59B6D]/30">
+                    {selectedUser.role}
+                  </span>
+                  {selectedUser.isBlocked ? (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-700 border border-red-200">
+                      Blocked
+                    </span>
+                  ) : (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-700 border border-emerald-200">
+                      Active
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="p-4 rounded-2xl border border-[#E8E2D9]">
+                <dt className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">
+                  Business / Atelier
+                </dt>
+                <dd className="text-[#1C1917] font-medium">
+                  {selectedUser.businessName || "—"}
+                </dd>
+              </div>
+              <div className="p-4 rounded-2xl border border-[#E8E2D9]">
+                <dt className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">
+                  Subscription
+                </dt>
+                <dd className="text-[#1C1917] font-medium capitalize">
+                  {selectedUser.subscriptionPlan || "free"} plan
+                </dd>
+              </div>
+              <div className="p-4 rounded-2xl border border-[#E8E2D9]">
+                <dt className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">
+                  Registered
+                </dt>
+                <dd className="text-[#1C1917] font-medium flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#C59B6D]" />
+                  {formatDate(selectedUser.createdAt || "")}
+                </dd>
+              </div>
+              <div className="p-4 rounded-2xl border border-[#E8E2D9]">
+                <dt className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">
+                  Premium Expires
+                </dt>
+                <dd className="text-[#1C1917] font-medium">
+                  {selectedUser.subscriptionExpiresAt
+                    ? formatDate(selectedUser.subscriptionExpiresAt)
+                    : "—"}
+                </dd>
+              </div>
+            </dl>
+
+            <div className="p-3 rounded-xl bg-[#FAF8F5] border border-[#E8E2D9]">
+              <p className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">
+                User ID
+              </p>
+              <p className="text-[11px] text-gray-600 break-all font-mono">{selectedUser._id}</p>
+            </div>
+
+            <div className="flex items-center justify-end gap-3">
+              <button
+                onClick={() => setSelectedUser(null)}
+                className="px-5 py-2.5 rounded-full border border-[#E8E2D9] text-xs uppercase tracking-wider font-semibold text-gray-600 hover:bg-[#FAF8F5]"
+              >
+                Close
+              </button>
+              {selectedUser.role !== "admin" && (
+                <button
+                  onClick={() => {
+                    handleToggleBlock(selectedUser);
+                    setSelectedUser(null);
+                  }}
+                  className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold ${
+                    selectedUser.isBlocked
+                      ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                      : "bg-red-600 text-white hover:bg-red-700"
+                  }`}
+                >
+                  {selectedUser.isBlocked ? "Unblock User" : "Block User"}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 }

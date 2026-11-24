@@ -335,6 +335,14 @@ export default function Navbar({ transparent = false }: NavbarProps) {
                   Go to Dashboard
                 </Link>
 
+                <Link
+                  href={`${getDashboardRouteForRole(user.role)}/profile`}
+                  className="py-2 flex items-center gap-2 text-gray-700"
+                >
+                  <Settings className="w-4 h-4" />
+                  Profile Settings
+                </Link>
+
                 <button
                   onClick={logout}
                   className="py-2 flex items-center gap-2 text-red-600 text-left"
