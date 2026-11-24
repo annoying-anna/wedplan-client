@@ -64,7 +64,7 @@ This repository contains the **Next.js 15 (App Router) client**. The Express + M
 ### Admin dashboard (`/dashboard/admin`)
 - Overview cards: total users, vendors, customers, services, pending services, transactions, and revenue.
 - **Manage Users** with search, role filter, a **View Details** modal, and instant Block/Unblock.
-- **Manage Services** moderation queue with search, category/status filters, Approve, Reject, and Delete.
+- **Manage Services** moderation queue with search, category/status filters, Approve, Reject, Reset to Pending, and Delete.
 - **Transactions** as a read-only, immutable Stripe ledger.
 
 ### Payments & uploads

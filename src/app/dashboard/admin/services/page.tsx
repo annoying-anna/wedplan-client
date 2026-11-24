@@ -271,6 +271,18 @@ function AdminServicesContent() {
                             </button>
                           )}
 
+                          {item.status !== "pending" && (
+                            <button
+                              onClick={() => handleUpdateStatus(item._id, "pending")}
+                              disabled={isProcessing}
+                              className="px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-[11px] font-semibold transition-all border border-gray-200 flex items-center gap-1 disabled:opacity-50"
+                              title="Reset to Pending Review"
+                            >
+                              <Clock className="w-3 h-3" />
+                              <span>Reset</span>
+                            </button>
+                          )}
+
                           <button
                             onClick={() => handleDelete(item._id, item.serviceName)}
                             className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
