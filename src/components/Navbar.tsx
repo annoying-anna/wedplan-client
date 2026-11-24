@@ -71,33 +71,29 @@ export default function Navbar({ transparent = false }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-serif text-sm font-bold shadow-xs transition-transform duration-300 group-hover:scale-105 ${
-            shouldBeDarkText
-              ? "bg-[#C59B6D] text-white"
-              : "bg-white/25 backdrop-blur-xs text-white border border-white/40"
-          }`}>
+          <div className="w-9 h-9 rounded-full bg-[#C59B6D] flex items-center justify-center text-white font-serif text-lg font-bold shadow-sm transition-transform duration-300 group-hover:scale-105">
             W
           </div>
           <div className="flex flex-col">
             <span
-              className={`font-serif text-2xl tracking-[0.06em] font-normal transition-colors ${
+              className={`font-serif text-2xl tracking-[0.12em] font-medium uppercase transition-colors ${
                 shouldBeDarkText ? "text-[#1C1917]" : "text-white"
               }`}
             >
-              Gretna Green
+              WedPlan
             </span>
             <span
               className={`text-[9px] uppercase tracking-[0.3em] font-sans -mt-1 font-semibold ${
-                shouldBeDarkText ? "text-[#C59B6D]" : "text-white/90"
+                shouldBeDarkText ? "text-[#C59B6D]" : "text-white/85"
               }`}
             >
-              WedPlan Atelier
+              Wedding Atelier
             </span>
           </div>
         </Link>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-8 text-[12px] tracking-[0.2em] uppercase font-medium">
+        <nav className="hidden md:flex items-center gap-7 text-[12px] tracking-[0.2em] uppercase font-medium">
           <Link
             href="/"
             className={`transition-colors duration-200 relative py-1 hover:text-[#C59B6D] ${
@@ -123,12 +119,20 @@ export default function Navbar({ transparent = false }: NavbarProps) {
             Browse Services
           </Link>
           <a
-            href="#about"
+            href="#venues"
             className={`transition-colors duration-200 hover:text-[#C59B6D] ${
               shouldBeDarkText ? "text-[#1C1917]/80" : "text-white/90"
             }`}
           >
-            About Us
+            Venues
+          </a>
+          <a
+            href="#how-it-works"
+            className={`transition-colors duration-200 hover:text-[#C59B6D] ${
+              shouldBeDarkText ? "text-[#1C1917]/80" : "text-white/90"
+            }`}
+          >
+            How It Works
           </a>
           <a
             href="#pricing"
@@ -137,6 +141,14 @@ export default function Navbar({ transparent = false }: NavbarProps) {
             }`}
           >
             Pricing
+          </a>
+          <a
+            href="#about"
+            className={`transition-colors duration-200 hover:text-[#C59B6D] ${
+              shouldBeDarkText ? "text-[#1C1917]/80" : "text-white/90"
+            }`}
+          >
+            About Us
           </a>
           <a
             href="#contact"
