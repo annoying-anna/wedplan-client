@@ -240,7 +240,7 @@ Deployment checklist:
 
 ## 📦 Git Commit Requirement
 
-This repository contains **34+ meaningful commits** (the assignment requires at least 20). Commit messages describe the actual work performed. The server repository contains **18+ meaningful commits** (requirement: at least 12).
+This repository contains **37+ meaningful commits** (the assignment requires at least 20). Commit messages describe the actual work performed. The server repository contains **20+ meaningful commits** (requirement: at least 12).
 
 ---
 
