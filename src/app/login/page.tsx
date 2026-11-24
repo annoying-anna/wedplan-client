@@ -8,16 +8,20 @@ import { authClient } from "@/lib/auth-client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
-import { Mail, Lock, Sparkles, ArrowRight, ShieldCheck, UserCheck, Store } from "lucide-react";
+import { Mail, Lock, Sparkles, ArrowRight, ShieldCheck, UserCheck, Store, KeyRound } from "lucide-react";
 
 function LoginForm() {
-  const { login, googleLogin, getDashboardRouteForRole } = useAuth();
+  const { login, googleLogin, sendLoginOtp, verifyLoginOtp, getDashboardRouteForRole } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect");
 
+  const [authMode, setAuthMode] = useState<"password" | "otp">("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [demoOtpHint, setDemoOtpHint] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,6 +41,47 @@ function LoginForm() {
       }
     } catch (err) {
       // toast is handled in AuthContext
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleSendOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) {
+      toast.error("Please enter your email address first.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await sendLoginOtp(email.trim());
+      setOtpSent(true);
+      setDemoOtpHint(res.demoOtp || null);
+    } catch {
+      // toast handled in AuthContext
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || !otpCode.trim()) {
+      toast.error("Please enter both email and the 6-digit verification code.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const user = await verifyLoginOtp(email.trim(), otpCode.trim());
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        router.push(getDashboardRouteForRole(user.role));
+      }
+    } catch {
+      // toast handled in AuthContext
     } finally {
       setSubmitting(false);
     }
@@ -149,56 +194,183 @@ function LoginForm() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-xs uppercase tracking-wider font-semibold text-[#1C1917] mb-1.5">
-            Email Address
-          </label>
-          <div className="relative">
-            <Mail className="w-4 h-4 text-[#C59B6D] absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="email"
-              required
-              placeholder="e.g. bride@wedplan.luxury"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] rounded-xl border border-[#E8E2D9] text-xs font-medium text-[#1C1917] focus:outline-none focus:border-[#C59B6D]"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-xs uppercase tracking-wider font-semibold text-[#1C1917] mb-1.5">
-            Password
-          </label>
-          <div className="relative">
-            <Lock className="w-4 h-4 text-[#C59B6D] absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="password"
-              required
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] rounded-xl border border-[#E8E2D9] text-xs font-medium text-[#1C1917] focus:outline-none focus:border-[#C59B6D]"
-            />
-          </div>
-        </div>
-
+      {/* Auth Mode Switcher: Password vs Email Verification Code */}
+      <div className="grid grid-cols-2 p-1 bg-[#FAF8F5] rounded-full border border-[#E8E2D9]">
         <button
-          type="submit"
-          disabled={submitting}
-          className="w-full py-3.5 rounded-full bg-[#C59B6D] hover:bg-[#8E7356] text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+          type="button"
+          onClick={() => {
+            setAuthMode("password");
+            setOtpSent(false);
+            setDemoOtpHint(null);
+          }}
+          className={`py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all ${
+            authMode === "password"
+              ? "bg-white text-[#1C1917] shadow-sm border border-[#E8E2D9]"
+              : "text-gray-500 hover:text-[#1C1917]"
+          }`}
         >
-          {submitting ? (
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <>
-              <span>Sign In</span>
-              <ArrowRight className="w-4 h-4" />
-            </>
-          )}
+          Password
         </button>
-      </form>
+        <button
+          type="button"
+          onClick={() => setAuthMode("otp")}
+          className={`py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all ${
+            authMode === "otp"
+              ? "bg-white text-[#1C1917] shadow-sm border border-[#E8E2D9]"
+              : "text-gray-500 hover:text-[#1C1917]"
+          }`}
+        >
+          Email Code
+        </button>
+      </div>
+
+      {authMode === "password" ? (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs uppercase tracking-wider font-semibold text-[#1C1917] mb-1.5">
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-[#C59B6D] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="email"
+                required
+                placeholder="e.g. bride@wedplan.luxury"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] rounded-xl border border-[#E8E2D9] text-xs font-medium text-[#1C1917] focus:outline-none focus:border-[#C59B6D]"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs uppercase tracking-wider font-semibold text-[#1C1917] mb-1.5">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-[#C59B6D] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] rounded-xl border border-[#E8E2D9] text-xs font-medium text-[#1C1917] focus:outline-none focus:border-[#C59B6D]"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full py-3.5 rounded-full bg-[#C59B6D] hover:bg-[#8E7356] text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {submitting ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <>
+                <span>Sign In</span>
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
+        </form>
+      ) : (
+        <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="space-y-4">
+          <div>
+            <label className="block text-xs uppercase tracking-wider font-semibold text-[#1C1917] mb-1.5">
+              Account Email Address
+            </label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-[#C59B6D] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="email"
+                required
+                disabled={otpSent}
+                placeholder="e.g. emily@wedplan.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] rounded-xl border border-[#E8E2D9] text-xs font-medium text-[#1C1917] focus:outline-none focus:border-[#C59B6D] disabled:opacity-70"
+              />
+            </div>
+          </div>
+
+          {otpSent && (
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-[#1C1917] mb-1.5">
+                  6-Digit Verification Code
+                </label>
+                <div className="relative">
+                  <KeyRound className="w-4 h-4 text-[#C59B6D] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={6}
+                    required
+                    placeholder="Enter 6-digit code"
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ""))}
+                    className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] rounded-xl border border-[#E8E2D9] text-sm tracking-[0.35em] font-bold text-[#1C1917] focus:outline-none focus:border-[#C59B6D]"
+                  />
+                </div>
+              </div>
+
+              {demoOtpHint && (
+                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 flex items-center justify-between gap-2">
+                  <span>
+                    Concierge Preview Code: <strong className="tracking-widest">{demoOtpHint}</strong>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setOtpCode(demoOtpHint)}
+                    className="px-2.5 py-1 rounded-full bg-amber-200/80 hover:bg-amber-300 text-amber-950 font-semibold text-[10px] uppercase tracking-wider"
+                  >
+                    Fill
+                  </button>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between text-[11px] text-gray-500">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtpCode("");
+                    setDemoOtpHint(null);
+                  }}
+                  className="hover:text-[#1C1917] underline"
+                >
+                  Change email
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSendOtp}
+                  disabled={submitting}
+                  className="text-[#C59B6D] font-semibold hover:underline"
+                >
+                  Resend code
+                </button>
+              </div>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full py-3.5 rounded-full bg-[#C59B6D] hover:bg-[#8E7356] text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {submitting ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <>
+                <span>{otpSent ? "Verify & Sign In" : "Send Verification Code"}</span>
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
+        </form>
+      )}
 
       {/* Google OAuth Option */}
       <div className="pt-2">

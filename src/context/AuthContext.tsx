@@ -26,6 +26,8 @@ interface AuthContextType {
     image?: string;
     role?: "customer" | "vendor";
   }) => Promise<User>;
+  sendLoginOtp: (email: string) => Promise<{ message: string; demoOtp?: string }>;
+  verifyLoginOtp: (email: string, code: string) => Promise<User>;
   logout: () => void;
   updateUser: (updatedUser: Partial<User>) => void;
   refreshUser: () => Promise<void>;
@@ -224,6 +226,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const sendLoginOtp = async (
+    email: string
+  ): Promise<{ message: string; demoOtp?: string }> => {
+    try {
+      const data = await fetchApi<{
+        success: boolean;
+        message: string;
+        demoOtp?: string;
+      }>("/auth/send-otp", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+      });
+      toast.success(data.message || "Verification code sent!");
+      return { message: data.message, demoOtp: data.demoOtp };
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send verification code");
+      throw error;
+    }
+  };
+
+  const verifyLoginOtp = async (email: string, code: string): Promise<User> => {
+    setIsLoading(true);
+    try {
+      const data = await fetchApi<{ success: boolean; token: string; user: User }>(
+        "/auth/verify-otp",
+        {
+          method: "POST",
+          body: JSON.stringify({ email, code }),
+        }
+      );
+
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem("wedplan_token", data.token);
+      localStorage.setItem("wedplan_user", JSON.stringify(data.user));
+      localStorage.removeItem("wedplan_explicit_logout");
+
+      toast.success(`Welcome back, ${data.user.name}!`);
+      return data.user;
+    } catch (error: any) {
+      toast.error(error.message || "Invalid or expired verification code");
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = async () => {
     // Prevent a lingering Better Auth (Google) session from silently
     // re-authenticating the user on the next page load after an explicit logout.
@@ -278,6 +327,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         register,
         googleLogin,
+        sendLoginOtp,
+        verifyLoginOtp,
         logout,
         updateUser,
         refreshUser,
