@@ -20,10 +20,12 @@ import {
   Upload,
   CheckCircle2,
   AlertCircle,
+  KeyRound,
 } from "lucide-react";
 
 function RegisterForm() {
-  const { register, googleLogin, getDashboardRouteForRole } = useAuth();
+  const { register, verifyEmailOtp, sendLoginOtp, googleLogin, getDashboardRouteForRole } =
+    useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialRoleParam = searchParams.get("role") === "vendor" ? "vendor" : "customer";
@@ -36,6 +38,9 @@ function RegisterForm() {
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
+  const [awaitingVerification, setAwaitingVerification] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
 
   // Password Validation Checklist
   const hasMinLength = password.length >= 6;
@@ -90,7 +95,7 @@ function RegisterForm() {
 
     setSubmitting(true);
     try {
-      const user = await register({
+      const res = await register({
         name,
         email,
         password,
@@ -99,8 +104,34 @@ function RegisterForm() {
         businessName: role === "vendor" ? businessName : undefined,
       });
 
-      router.push(getDashboardRouteForRole(user.role));
+      if (res.requiresVerification) {
+        setPendingEmail(res.email || email);
+        setAwaitingVerification(true);
+        return;
+      }
+
+      if (res.user) {
+        router.push(getDashboardRouteForRole(res.user.role));
+      }
     } catch (err) {
+      // Handled in AuthContext
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleVerifyEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!verificationCode.trim()) {
+      toast.error("Please enter the 6-digit verification code sent to your email.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const user = await verifyEmailOtp(pendingEmail, verificationCode.trim());
+      router.push(getDashboardRouteForRole(user.role));
+    } catch {
       // Handled in AuthContext
     } finally {
       setSubmitting(false);
@@ -149,6 +180,81 @@ function RegisterForm() {
       setSubmitting(false);
     }
   };
+
+  if (awaitingVerification) {
+    return (
+      <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E8E2D9] shadow-xl space-y-6">
+        <div className="text-center space-y-2">
+          <span className="eyebrow-divider text-[10px]">Email Ownership Check</span>
+          <h1 className="font-serif text-3xl font-normal text-[#1C1917]">
+            Verify Your Email
+          </h1>
+          <p className="text-xs text-gray-500 font-light">
+            We sent a 6-digit verification code to{" "}
+            <strong className="text-[#1C1917]">{pendingEmail}</strong>. Enter it below to activate
+            your account.
+          </p>
+        </div>
+
+        <form onSubmit={handleVerifyEmail} className="space-y-4">
+          <div>
+            <label className="block text-xs uppercase tracking-wider font-semibold text-[#1C1917] mb-1.5">
+              6-Digit Verification Code *
+            </label>
+            <div className="relative">
+              <KeyRound className="w-4 h-4 text-[#C59B6D] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={6}
+                required
+                placeholder="Enter 6-digit code"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ""))}
+                className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] rounded-xl border border-[#E8E2D9] text-sm tracking-[0.35em] font-bold text-[#1C1917] focus:outline-none focus:border-[#C59B6D]"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full py-3.5 rounded-full bg-[#C59B6D] hover:bg-[#8E7356] text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {submitting ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <>
+                <span>Verify & Activate Account</span>
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-[#E8E2D9]">
+          <button
+            type="button"
+            onClick={() => {
+              setAwaitingVerification(false);
+              setVerificationCode("");
+            }}
+            className="hover:text-[#1C1917] underline"
+          >
+            Edit registration details
+          </button>
+          <button
+            type="button"
+            onClick={() => sendLoginOtp(pendingEmail)}
+            disabled={submitting}
+            className="text-[#C59B6D] font-semibold hover:underline"
+          >
+            Resend Code
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E8E2D9] shadow-xl space-y-6">

@@ -21,7 +21,6 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [otpCode, setOtpCode] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [demoOtpHint, setDemoOtpHint] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,9 +54,8 @@ function LoginForm() {
 
     setSubmitting(true);
     try {
-      const res = await sendLoginOtp(email.trim());
+      await sendLoginOtp(email.trim());
       setOtpSent(true);
-      setDemoOtpHint(res.demoOtp || null);
     } catch {
       // toast handled in AuthContext
     } finally {
@@ -201,7 +199,6 @@ function LoginForm() {
           onClick={() => {
             setAuthMode("password");
             setOtpSent(false);
-            setDemoOtpHint(null);
           }}
           className={`py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all ${
             authMode === "password"
@@ -316,28 +313,12 @@ function LoginForm() {
                 </div>
               </div>
 
-              {demoOtpHint && (
-                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 flex items-center justify-between gap-2">
-                  <span>
-                    Concierge Preview Code: <strong className="tracking-widest">{demoOtpHint}</strong>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setOtpCode(demoOtpHint)}
-                    className="px-2.5 py-1 rounded-full bg-amber-200/80 hover:bg-amber-300 text-amber-950 font-semibold text-[10px] uppercase tracking-wider"
-                  >
-                    Fill
-                  </button>
-                </div>
-              )}
-
               <div className="flex items-center justify-between text-[11px] text-gray-500">
                 <button
                   type="button"
                   onClick={() => {
                     setOtpSent(false);
                     setOtpCode("");
-                    setDemoOtpHint(null);
                   }}
                   className="hover:text-[#1C1917] underline"
                 >

@@ -19,14 +19,15 @@ interface AuthContextType {
     role: "customer" | "vendor";
     image?: string;
     businessName?: string;
-  }) => Promise<User>;
+  }) => Promise<{ requiresVerification?: boolean; email?: string; user?: User }>;
+  verifyEmailOtp: (email: string, code: string) => Promise<User>;
   googleLogin: (data: {
     name: string;
     email: string;
     image?: string;
     role?: "customer" | "vendor";
   }) => Promise<User>;
-  sendLoginOtp: (email: string) => Promise<{ message: string; demoOtp?: string }>;
+  sendLoginOtp: (email: string) => Promise<{ message: string }>;
   verifyLoginOtp: (email: string, code: string) => Promise<User>;
   logout: () => void;
   updateUser: (updatedUser: Partial<User>) => void;
@@ -167,14 +168,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     role: "customer" | "vendor";
     image?: string;
     businessName?: string;
-  }): Promise<User> => {
+  }): Promise<{ requiresVerification?: boolean; email?: string; user?: User }> => {
+    setIsLoading(true);
+    try {
+      const data = await fetchApi<{
+        success: boolean;
+        requiresVerification?: boolean;
+        email?: string;
+        message?: string;
+        token?: string;
+        user?: User;
+      }>("/auth/register", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+
+      if (data.requiresVerification) {
+        toast.success(
+          data.message || "Verification code sent! Please check your email inbox."
+        );
+        return { requiresVerification: true, email: data.email || payload.email };
+      }
+
+      if (data.token && data.user) {
+        setToken(data.token);
+        setUser(data.user);
+        localStorage.setItem("wedplan_token", data.token);
+        localStorage.setItem("wedplan_user", JSON.stringify(data.user));
+        localStorage.removeItem("wedplan_explicit_logout");
+        toast.success(`Account created successfully! Welcome to WedPlan.`);
+        return { user: data.user };
+      }
+
+      return {};
+    } catch (error: any) {
+      toast.error(error.message || "Failed to create account");
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const verifyEmailOtp = async (email: string, code: string): Promise<User> => {
     setIsLoading(true);
     try {
       const data = await fetchApi<{ success: boolean; token: string; user: User }>(
-        "/auth/register",
+        "/auth/verify-email",
         {
           method: "POST",
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ email, code }),
         }
       );
 
@@ -184,10 +226,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("wedplan_user", JSON.stringify(data.user));
       localStorage.removeItem("wedplan_explicit_logout");
 
-      toast.success(`Account created successfully! Welcome to WedPlan.`);
+      toast.success(`Email verified! Welcome to WedPlan, ${data.user.name}.`);
       return data.user;
     } catch (error: any) {
-      toast.error(error.message || "Failed to create account");
+      toast.error(error.message || "Invalid or expired verification code");
       throw error;
     } finally {
       setIsLoading(false);
@@ -326,6 +368,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLoading,
         login,
         register,
+        verifyEmailOtp,
         googleLogin,
         sendLoginOtp,
         verifyLoginOtp,
