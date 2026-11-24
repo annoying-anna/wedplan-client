@@ -69,9 +69,18 @@ function LoginForm() {
           provider: "google",
           callbackURL: redirectUrl || "/",
         });
-        if (result?.data?.url) {
-          window.location.assign(result.data.url);
+        const socialUrl = result?.data?.url;
+
+        // A placeholder client id means Google OAuth is not configured on this
+        // deployment. Fall through to the demo account instead of sending the
+        // visitor to a broken Google consent screen.
+        if (socialUrl && !socialUrl.includes("mock_google_client_id")) {
+          window.location.assign(socialUrl);
           return;
+        }
+
+        if (socialUrl) {
+          toast.info("Google OAuth is not configured; using the demo Google sign-in.");
         }
       } catch (betterAuthErr) {
         // Fallback to direct Google authentication endpoint
