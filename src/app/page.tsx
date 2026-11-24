@@ -301,7 +301,13 @@ export default function HomePage() {
           2. FEATURED WEDDING SERVICES
       ============================================================ */}
       <section className="py-28 px-6 sm:px-8 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-14"
+        >
           <span className="eyebrow-divider mb-4">Curated Collection</span>
           <h2 className="font-serif text-4xl sm:text-6xl font-normal text-[#1C1917] mt-3 mb-5">
             Featured Wedding Services
@@ -310,7 +316,7 @@ export default function HomePage() {
             Hand-selected top rated wedding artisans and verified venues, vetted for luxury,
             impeccable reliability, and timeless excellence.
           </p>
-        </div>
+        </motion.div>
 
         {/* Category Filter Tabs */}
         <div className="flex items-center justify-center gap-2 flex-wrap mb-14">
@@ -375,7 +381,13 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             {/* Left: Venue portrait */}
-            <div className="lg:col-span-5 relative order-last lg:order-first">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="lg:col-span-5 relative order-last lg:order-first"
+            >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-white aspect-[3/4]">
                 <img
                   src="/wedding/citation-venue.jpg"
@@ -396,10 +408,16 @@ export default function HomePage() {
               {/* Decorative circles */}
               <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full border border-[#C59B6D]/30 pointer-events-none" />
               <div className="absolute -bottom-4 -right-4 w-16 h-16 rounded-full border border-[#C59B6D]/20 pointer-events-none" />
-            </div>
+            </motion.div>
 
             {/* Right: Story */}
-            <div className="lg:col-span-7 space-y-7">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="lg:col-span-7 space-y-7"
+            >
               <span className="eyebrow-divider">Iconic Venues</span>
               <h2 className="font-serif text-4xl sm:text-6xl font-normal text-[#1C1917] leading-tight">
                 An unforgettable
@@ -438,7 +456,7 @@ export default function HomePage() {
                 <span>Explore Iconic Venues</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -447,7 +465,13 @@ export default function HomePage() {
           4. WEDDING SERVICE CATEGORIES — Bold editorial cards
       ============================================================ */}
       <section className="py-28 max-w-7xl mx-auto px-6 sm:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-2xl mx-auto mb-16"
+        >
           <span className="eyebrow-divider mb-4">Explore by Discipline</span>
           <h2 className="font-serif text-4xl sm:text-6xl font-normal text-[#1C1917] mt-3 mb-5">
             Wedding Service Categories
@@ -456,7 +480,7 @@ export default function HomePage() {
             Explore your celebration essentials by category, curated with the highest standards
             of craftsmanship and luxury.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((cat, idx) => {
@@ -504,7 +528,13 @@ export default function HomePage() {
         }} />
 
         <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-2xl mx-auto mb-20"
+          >
             <span className="inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.4em] uppercase text-[#C59B6D] mb-5">
               <span className="w-8 h-px bg-[#C59B6D]/50" />
               Concierge Process
@@ -517,7 +547,7 @@ export default function HomePage() {
               From initial inspiration to your final vows, orchestrating your celebration
               has never been so effortless and refined.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {/* Connecting line */}
@@ -647,12 +677,18 @@ export default function HomePage() {
       ============================================================ */}
       <section className="py-24 bg-[#F5EFEB] border-y border-[#E8E2D9]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
             <span className="eyebrow-divider mb-4">Why Choose WedPlan</span>
             <h2 className="font-serif text-4xl sm:text-5xl font-normal text-[#1C1917] mt-3">
               The WedPlan Promise
             </h2>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
             {[
@@ -819,7 +855,13 @@ export default function HomePage() {
       ============================================================ */}
       <section className="py-28 bg-[#F5EFEB] border-t border-[#E8E2D9]">
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-14"
+          >
             <div>
               <span className="eyebrow-divider mb-4">Editorial Journal</span>
               <h2 className="font-serif text-4xl sm:text-5xl font-normal text-[#1C1917] mt-3">
@@ -832,7 +874,7 @@ export default function HomePage() {
             >
               View All <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {blogArticles.map((article, idx) => (

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { useAuth } from "@/context/AuthContext";
 import { fetchApi } from "@/lib/api";
+import { uploadImageToImgBB } from "@/lib/upload";
 import { toast } from "sonner";
 import { User, Mail, Upload, Save } from "lucide-react";
 
@@ -15,16 +16,27 @@ export default function CustomerProfilePage() {
   const [imagePreview, setImagePreview] = useState(user?.image || "");
   const [saving, setSaving] = useState(false);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        setImagePreview(result);
-        setImage(result);
-      };
-      reader.readAsDataURL(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      setUploadingImage(true);
+
+      try {
+        toast.info("Uploading profile photo to ImgBB hosting...");
+        const hostedUrl = await uploadImageToImgBB(file);
+        setImage(hostedUrl);
+        toast.success("Photo uploaded successfully!");
+      } catch (err) {
+        const reader = new FileReader();
+        reader.onloadend = () => setImage(reader.result as string);
+        reader.readAsDataURL(file);
+      } finally {
+        setUploadingImage(false);
+      }
     }
   };
 
